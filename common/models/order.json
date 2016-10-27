@@ -23,8 +23,8 @@
   "validations": [],
   "relations": {
     "tickets": {
-      "model": "Ticket",
       "type": "hasMany",
+      "model": "Ticket",
       "foreignKey": "orderId"
     }
   },

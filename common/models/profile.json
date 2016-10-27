@@ -1,5 +1,5 @@
 {
-  "name": "TicketType",
+  "name": "Profile",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -9,19 +9,18 @@
     "name": {
       "type": "string"
     },
-    "price": {
-      "type": "number"
+    "institution": {
+      "type": "string"
     },
-    "quantity": {
-      "type": "number"
+    "email": {
+      "type": "string"
     }
   },
   "validations": [],
   "relations": {
-    "tickets": {
-      "type": "hasMany",
-      "model": "Ticket",
-      "foreignKey": "ticketTypeId"
+    "userId": {
+      "type": "belongsTo",
+      "model": "user"
     }
   },
   "acls": [],

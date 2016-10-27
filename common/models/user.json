@@ -9,13 +9,13 @@
   "validations": [],
   "relations": {
     "orders": {
-      "model": "Order",
       "type": "hasMany",
+      "model": "Order",
       "foreignKey": "userId"
     },
     "tickets": {
-      "model": "Ticket",
       "type": "hasMany",
+      "model": "Ticket",
       "through": "Order"
     }
   },
@@ -23,8 +23,16 @@
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "isChurchill"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "ldapLookup"
     }
   ],
   "methods": {}

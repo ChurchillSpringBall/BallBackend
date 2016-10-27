@@ -30,6 +30,11 @@
     "orderId": {
       "type": "number",
       "required": false
+    },
+    "admittedAt": {
+      "type": "date",
+      "required": false,
+      "default": null
     }
   },
   "validations": [],

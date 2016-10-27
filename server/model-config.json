@@ -1,10 +1,10 @@
 {
   "_meta": {
     "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
       "../common/models",
       "./models",
+      "loopback/common/models",
+      "loopback/server/models",
       "../node_modules/loopback-component-passport/lib/models"
     ],
     "mixins": [
@@ -38,10 +38,6 @@
     "dataSource": "db",
     "public": true
   },
-  "User": {
-    "dataSource": "db",
-    "public": true
-  },
   "UserCredential": {
     "dataSource": "db",
     "public": false
@@ -55,6 +51,10 @@
     "public": true
   },
   "TicketType": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Profile": {
     "dataSource": "db",
     "public": true
   }
