@@ -13,7 +13,7 @@
     "authPath": "/auth/raven",
     "callbackURL": "/auth/raven",
     "callbackPath": "/auth/raven",
-    "successRedirect": "/",
+    "successRedirect": "/auth/success",
     "failureRedirect": "/login",
     "scope": ["email"],
     "failureFlash": true

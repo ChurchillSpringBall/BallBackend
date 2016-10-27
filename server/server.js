@@ -66,8 +66,6 @@ boot(app, __dirname, (error) => {
   // app.enableAuth(); should be enabled in /boot
   app.use(flash());
 
-  app.models.user.ldapLookup();
-
   // start the server if `$ node server.js`
   if (require.main === module)
     app.start();
