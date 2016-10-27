@@ -1,6 +1,11 @@
 {
   "db": {
     "name": "db",
-    "connector": "memory"
+    "connector": "postgresql",
+    "host": "localhost",
+    "port": "5432",
+    "database": "springball",
+    "username": "springball",
+    "password": "springball"
   }
 }

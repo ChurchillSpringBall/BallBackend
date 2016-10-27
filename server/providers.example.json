@@ -1,0 +1,20 @@
+{
+  "raven": {
+    "provider": "raven",
+    "module": "passport-raven",
+    "desc": "Churchill College Spring Ball",
+    "msg": "We need to check you are a college member",
+    "debug": false,
+    "passReqToCallback": true,
+
+    "audience": "http://localhost:3001",
+
+    "authPath": "/auth/raven",
+    "callbackURL": "/auth/raven",
+    "callbackPath": "/auth/raven",
+    "successRedirect": "/auth/account",
+    "failureRedirect": "/login",
+    "scope": ["email"],
+    "failureFlash": true
+  }
+}

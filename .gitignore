@@ -1,3 +1,7 @@
+# Configuration files
+providers.json
+
+# Default Ignores
 *.csv
 *.dat
 *.iml
