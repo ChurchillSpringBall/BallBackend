@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
+    "build:sdk": "./node_modules/.bin/lb-sdk server/server.js ../frontend/src/app/shared/sdk -d ng4web -i disabled",
     "lint": "eslint .",
     "start": "node .",
     "posttest": "npm run lint && nsp check"
@@ -23,6 +24,7 @@
     "strong-error-handler": "^1.0.1"
   },
   "devDependencies": {
+    "@mean-expert/loopback-sdk-builder": "^2.1.0-beta.13",
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
     "nsp": "^2.1.0"

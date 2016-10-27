@@ -9,10 +9,11 @@
 
     "audience": "http://localhost:3001",
 
+    "authScheme": "openid",
     "authPath": "/auth/raven",
     "callbackURL": "/auth/raven",
     "callbackPath": "/auth/raven",
-    "successRedirect": "/auth/account",
+    "successRedirect": "/",
     "failureRedirect": "/login",
     "scope": ["email"],
     "failureFlash": true

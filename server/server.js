@@ -60,7 +60,7 @@ boot(app, __dirname, (error) => {
   }
 
   app.use('/api', loopback.rest());
-  app.use(loopback.static(path.resolve(__dirname, '../client')));  // TODO: set up nginx to serve non-auth/api urls?
+  app.use(loopback.static(path.resolve(__dirname, app.get('clientDir'))));  // TODO: set up nginx to serve non-auth/api urls?
   // app.use(loopback.urlNotFound());
   // app.use(errorHandler());
   // app.enableAuth(); should be enabled in /boot

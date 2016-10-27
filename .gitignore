@@ -1,6 +1,8 @@
 # Configuration files
 providers.json
 
+client-symlink
+
 # Default Ignores
 *.csv
 *.dat
