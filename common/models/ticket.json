@@ -7,17 +7,29 @@
     "validateUpsert": true
   },
   "properties": {
-    "type": {
+    "ticketTypeId": {
+      "type": "number",
+      "required": true
+    },
+    "name": {
       "type": "string",
-      "required": true
+      "required": false
     },
-    "quantity": {
-      "type": "number",
-      "required": true
+    "email": {
+      "type": "string",
+      "required": false
     },
-    "Price": {
+    "price": {
+      "type": "string",
+      "required": false
+    },
+    "barCode": {
+      "type": "string",
+      "required": false
+    },
+    "orderId": {
       "type": "number",
-      "required": true
+      "required": false
     }
   },
   "validations": [],

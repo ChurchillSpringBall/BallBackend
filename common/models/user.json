@@ -7,13 +7,24 @@
   },
   "properties": {},
   "validations": [],
-  "relations": {},
+  "relations": {
+    "orders": {
+      "model": "Order",
+      "type": "hasMany",
+      "foreignKey": "userId"
+    },
+    "tickets": {
+      "model": "Ticket",
+      "type": "hasMany",
+      "through": "Order"
+    }
+  },
   "acls": [
     {
       "accessType": "*",
-      "permission": "ALLOW",
       "principalType": "ROLE",
-      "principalId": "admin"
+      "principalId": "admin",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

@@ -1,23 +1,19 @@
 {
-  "name": "Order",
-  "plural": "Orders",
+  "name": "TicketType",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "date": {
-      "type": "date",
-      "required": true
+    "name": {
+      "type": "string"
     },
-    "total": {
-      "type": "number",
-      "required": true
+    "price": {
+      "type": "number"
     },
-    "userId": {
-      "type": "number",
-      "required": true
+    "quantity": {
+      "type": "number"
     }
   },
   "validations": [],
@@ -25,7 +21,7 @@
     "tickets": {
       "model": "Ticket",
       "type": "hasMany",
-      "foreignKey": "orderId"
+      "foreignKey": "ticketTypeId"
     }
   },
   "acls": [],
