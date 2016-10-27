@@ -47,7 +47,7 @@ boot(app, __dirname, (error) => {
 
   // Set up related models
   passportConfigurator.setupModels({
-    userModel: app.models.User,
+    userModel: app.models.user,
     userIdentityModel: app.models.UserIdentity,
     userCredentialModel: app.models.UserCredential
   });
@@ -65,6 +65,8 @@ boot(app, __dirname, (error) => {
   // app.use(errorHandler());
   // app.enableAuth(); should be enabled in /boot
   app.use(flash());
+
+  app.models.user.ldapLookup();
 
   // start the server if `$ node server.js`
   if (require.main === module)

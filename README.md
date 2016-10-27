@@ -19,4 +19,10 @@ parent-dir/
     server/
 ```
 
-You can also symlink the `frontend/dist` folder to `client-symlink` in this project and then configure your `server/config.development.json` to set the `client/` directory to your newly symlinked dir.  
+You can also symlink the `frontend/dist` folder to `client-symlink` in this project and then configure your `server/config.development.json` to set the `client/` directory to your newly symlinked dir.
+
+TODO
+----
+
+- Loopback's passport support sucks, so the emails in the user column are invalid and instead are formatted as `crsid@loopback.raven.com` no matter what I try. I've also had to modify `passport-raven` to act as if it were an openid library. Finding a better Raven solution is recommended. Currently the email needs to be scraped from `User.UserIdentity.profile.email`
+- LDAP lookup for raven.
