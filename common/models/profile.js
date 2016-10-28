@@ -1,23 +1,45 @@
 'use strict';
 
+const loopback = require('loopback');
 const ldap = require('ldapjs');
 const ldapClient = ldap.createClient({
   url: 'ldap://ldap.lookup.cam.ac.uk'
 });
 
 module.exports = function(Profile) {
-  Profile.isChurchill = (crsid) => {
-    return Profile.ldapLookup(crsid)
-      .then(results => {
-        if (!(results && results.length === 1)) {
-          throw new Error('Invalid number of responses for crsid ' + crsid);
+  /**
+   * Loads a profile from LDAP for a user. Does not return this user's identity as we should only release that
+   * to the user themselves.
+   * @param userId
+   * @returns {Promise.<boolean>}
+   */
+  Profile.loadProfile = (userId) => {
+    return Profile.app.models.UserIdentity.findOne({where: {userId: userId}})
+      .then(identity => Profile.ldapLookup(identity.externalId))
+      .then(ldap => {
+        if (!(ldap && ldap.length === 1)) {
+          throw new Error('Could not fetch user Raven profile via LDAP');
         }
 
-        const profile = results[0];
-        return profile.ou.includes('Churchill College');
-      });
+        const user = ldap[0];
+
+        return Profile.upsertWithWhere({userId: userId}, {
+          name: user.displayName,
+          crsid: user.uid,
+          institution: user.ou,
+          email: user.mail,
+          isChurchill: user.ou.startsWith('Churchill College'),
+          userId: userId
+        });
+      })
+      .then(() => true);
   };
 
+  /**
+   * Perform an LDAP lookup on a user's crsid
+   * @param crsid
+   * @returns {Promise}
+   */
   Profile.ldapLookup = (crsid) => {
     const search = {
       filter: `(uid=${crsid})`,
@@ -53,16 +75,9 @@ module.exports = function(Profile) {
     });
   };
 
-  Profile.remoteMethod('isChurchill', {
-    accepts: {arg: 'crsid', type: 'string', required: true},
-    returns: {arg: 'isChurchill', type: 'boolean'},
-    http: {path: '/ischurchill', verb: 'get'}
-    // isStatic: false
-  });
-
-  Profile.remoteMethod('ldapLookup', {
-    accepts: {arg: 'crsid', type: 'string', required: true},
-    returns: {arg: 'data', type: 'Object'},
-    http: {path: '/ldap', verb: 'get'}
+  Profile.remoteMethod('loadProfile', {
+    accepts: {arg: 'userid', type: 'number', required: true},
+    returns: {arg: 'success', type: 'boolean'},
+    http: {path: '/load', verb: 'get'}
   });
 };

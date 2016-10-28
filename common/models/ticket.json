@@ -7,10 +7,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "ticketTypeId": {
-      "type": "number",
-      "required": true
-    },
     "name": {
       "type": "string",
       "required": false
@@ -27,10 +23,6 @@
       "type": "string",
       "required": false
     },
-    "orderId": {
-      "type": "number",
-      "required": false
-    },
     "admittedAt": {
       "type": "date",
       "required": false,
@@ -38,7 +30,16 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "order": {
+      "type": "belongsTo",
+      "model": "Order"
+    },
+    "ticketType": {
+      "type": "belongsTo",
+      "model": "TicketType"
+    }
+  },
   "acls": [],
   "methods": {}
 }

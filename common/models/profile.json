@@ -9,20 +9,44 @@
     "name": {
       "type": "string"
     },
+    "crsid": {
+      "type": "string"
+    },
     "institution": {
       "type": "string"
     },
     "email": {
       "type": "string"
+    },
+    "isChurchill": {
+      "type": "boolean"
     }
   },
   "validations": [],
   "relations": {
-    "userId": {
+    "user": {
       "type": "belongsTo",
       "model": "user"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "loadProfile"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "findById"
+    }
+  ],
   "methods": {}
 }

@@ -14,10 +14,6 @@
     "total": {
       "type": "number",
       "required": true
-    },
-    "userId": {
-      "type": "number",
-      "required": true
     }
   },
   "validations": [],
@@ -26,6 +22,10 @@
       "type": "hasMany",
       "model": "Ticket",
       "foreignKey": "orderId"
+    },
+    "user": {
+      "type": "belongsTo",
+      "model": "user"
     }
   },
   "acls": [],
