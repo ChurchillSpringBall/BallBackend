@@ -1,18 +1,24 @@
 'use strict';
 
+// TODO: centralise the keys
+const stripe = require('stripe')('sk_test_kSs5RGJjZRksLYpaf6rwhywQ');
+
 module.exports = function (Order) {
   /**
    * Validate the totals and payments
+   * @param body
    * @param req
-   * @param order
    * @returns {Promise}
    */
-  Order.makeOrder = (req, order) => {
+  Order.makeOrder = (body, req) => {
     // TODO: check billing such as stripe
     // TODO: set prices etc. on tickets as per the standard
     // TODO: totals + payment fees
     // TODO: add and validate order uuid to prevent duplicate orders
     // TODO: validate userId is from the requesting user
+
+    const order = body.order;
+
     console.log(req.accessToken);
     order.userId = req.accessToken.userId;
 
@@ -25,7 +31,47 @@ module.exports = function (Order) {
       throw new Error('Attempting to purchase too many tickets');
     }
 
-    return Order.create(order)
+    return Order.app.models.TicketType.find()
+      .then(ticketTypes => {
+        const types = {};
+        ticketTypes.forEach(type => {
+          types[type.id] = type;
+        });
+
+        let total = 0;
+        tickets.forEach(ticket => {
+          const type = types[ticket.ticketTypeId];
+          ticket.price = type.price;
+          total += ticket.price;
+
+          if (!type.sold) {
+            type.purchasing = 0;
+          }
+
+          type.purchasing += 1;
+        });
+
+        let fees = 0;
+        if (order.paymentMethod === 'stripe') {
+          fees = calculateStripeFees(total);
+        }
+
+        order.total = total + fees;
+
+        // TODO: check that tickets of this type are available
+        // TODO: check user hasn't bought more than x tickets already
+
+        if (order.paymentMethod === 'stripe') {
+          return stripe.charges.create({
+            amount: Math.round(order.total * 100),
+            currency: 'GBP',
+            source: order.paymentToken,
+            description: 'Churchill Spring Ball Tickets',
+            statement_descriptor: 'Chu Ball Tickets'
+          });
+        }
+      })
+      .then(() => Order.create(order))
       .then(order => {
         tickets.forEach(ticket => ticket.orderId = order.id);
         // for some reason Ticket.create doesn't return anything...
@@ -47,10 +93,19 @@ module.exports = function (Order) {
 
   Order.remoteMethod('makeOrder', {
     accepts: [
+      {arg: 'order', type: 'object', http: {source: 'body'}, required: true},
       {arg: 'req', type: 'object', http: {source: 'req'}},
-      {arg: 'order', type: 'object', required: true}
     ],
     returns: {arg: 'order', type: 'object'},
     http: {path: '/make', verb: 'post'}
   })
 };
+
+/**
+ * Calculate the cost of Stripe fees
+ * @param total
+ * @returns {number}
+ */
+function calculateStripeFees(total) {
+  return 0.2 + 0.014 * total;
+}

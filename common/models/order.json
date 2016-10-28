@@ -25,6 +25,10 @@
         "dataType": "real"
       }
     },
+    "paymentToken": {
+      "type": "string",
+      "required": false
+    },
     "total": {
       "type": "number",
       "required": true,
