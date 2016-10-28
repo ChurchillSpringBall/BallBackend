@@ -5,6 +5,21 @@ module.exports = function AutoUpdate(server) {
 
   return dataSource.autoupdate()
     .then(() => console.log('Updated schema.'))
+    // TODO: make lng25 an admin user
+    .then(() => {
+      return server.models.TicketType.upsertWithWhere({name: 'Standard'}, {
+        name: 'Standard',
+        price: 85,
+        quantity: 750,
+      })
+    })
+    .then(() => {
+      return server.models.TicketType.upsertWithWhere({name: 'Queue Jump'}, {
+        name: 'Queue Jump',
+        price: 95,
+        quantity: 150
+      });
+    })
     .catch(error => {
       console.error(error);
       process.exit(1);

@@ -6,6 +6,7 @@ const loopback = require('loopback');
 const boot = require('loopback-boot');
 
 const app = module.exports = loopback();
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash');
 const errorHandler = require('strong-error-handler');
@@ -34,8 +35,9 @@ app.start = () => {
 boot(app, __dirname, (error) => {
   if (error) throw error;
 
-  app.use('auth', loopback.token({model: app.models.accessToken}));  // TODO: check if token + session should be used?
-  app.use('session', session({
+  app.middleware('auth', loopback.token({model: app.models.accessToken}));  // TODO: check if token + session should be used?]
+  // app.middleware('session:before', cookieParser(app.get('cookieSecret')));
+  app.middleware('session', session({
     secret: '9g2b4fchiuhfn2eocfin2ea2fv3wrgv350jino45gn',
     saveUninitialized: false,
     resave: false

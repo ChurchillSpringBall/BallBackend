@@ -6,7 +6,7 @@ const ldapClient = ldap.createClient({
   url: 'ldap://ldap.lookup.cam.ac.uk'
 });
 
-module.exports = function(Profile) {
+module.exports = function (Profile) {
   /**
    * Loads a profile from LDAP for a user. Does not return this user's identity as we should only release that
    * to the user themselves.
@@ -14,23 +14,32 @@ module.exports = function(Profile) {
    * @returns {Promise.<boolean>}
    */
   Profile.loadProfile = (userId) => {
-    return Profile.app.models.UserIdentity.findOne({where: {userId: userId}})
-      .then(identity => Profile.ldapLookup(identity.externalId))
-      .then(ldap => {
-        if (!(ldap && ldap.length === 1)) {
-          throw new Error('Could not fetch user Raven profile via LDAP');
+    return Profile.findOne({where: {userId: userId}})
+      .then(profile => {
+        if (profile) {
+          return true;
+          // TODO: refresh if LDAP lookup occurred in the last 24h
+          // TODO: check why LDAP stopped!? Is there a request limit or throttling, or an error with the following code?
+        } else {
+          return Profile.app.models.UserIdentity.findOne({where: {userId: userId}})
+            .then(identity => Profile.ldapLookup(identity.externalId))
+            .then(ldap => {
+              if (!(ldap && ldap.length === 1)) {
+                throw new Error('Could not fetch user Raven profile via LDAP');
+              }
+
+              const user = ldap[0];
+
+              return Profile.upsertWithWhere({userId: userId}, {
+                name: user.displayName,
+                crsid: user.uid,
+                institution: user.ou,
+                email: user.mail,
+                isChurchill: user.ou.startsWith('Churchill College'),
+                userId: userId
+              });
+            });
         }
-
-        const user = ldap[0];
-
-        return Profile.upsertWithWhere({userId: userId}, {
-          name: user.displayName,
-          crsid: user.uid,
-          institution: user.ou,
-          email: user.mail,
-          isChurchill: user.ou.startsWith('Churchill College'),
-          userId: userId
-        });
       })
       .then(() => true);
   };

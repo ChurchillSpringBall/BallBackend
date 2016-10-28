@@ -7,13 +7,31 @@
     "validateUpsert": true
   },
   "properties": {
-    "date": {
+    "created": {
       "type": "date",
+      "required": false,
+      "defaultFn": "now"
+    },
+    "paymentMethod": {
+      "type": "string",
       "required": true
+    },
+    "paymentFee": {
+      "type": "number",
+      "required": false,
+      "default": 0,
+      "postgresql": {
+        "columnName": "paymentfee",
+        "dataType": "real"
+      }
     },
     "total": {
       "type": "number",
-      "required": true
+      "required": true,
+      "postgresql": {
+        "columnName": "total",
+        "dataType": "real"
+      }
     }
   },
   "validations": [],
@@ -28,6 +46,30 @@
       "model": "user"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "makeOrder"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "findById"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "__get__tickets"
+    }
+  ],
   "methods": {}
 }

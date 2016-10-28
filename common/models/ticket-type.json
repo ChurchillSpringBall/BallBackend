@@ -10,10 +10,17 @@
       "type": "string"
     },
     "price": {
-      "type": "number"
+      "type": "number",
+      "postgresql": {
+        "columnName": "price",
+        "dataType": "real"
+      }
     },
     "quantity": {
-      "type": "number"
+      "type": "number",
+      "postgresql": {
+        "dataType": "integer"
+      }
     }
   },
   "validations": [],
@@ -24,6 +31,18 @@
       "foreignKey": "ticketTypeId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "find"
+    }
+  ],
   "methods": {}
 }

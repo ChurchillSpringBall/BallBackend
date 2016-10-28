@@ -13,11 +13,6 @@
       "model": "Order",
       "foreignKey": "userId"
     },
-    "tickets": {
-      "type": "hasMany",
-      "model": "Ticket",
-      "through": "Order"
-    },
     "profile": {
       "type": "hasOne",
       "model": "Profile",
@@ -30,6 +25,18 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "__get__profile"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "__get__orders"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "__get__tickets"
     }
   ],
   "methods": {}
