@@ -21,6 +21,8 @@ parent-dir/
 
 You can also symlink the `frontend/dist` folder to `client-symlink` in this project and then configure your `server/config.development.json` to set the `client/` directory to your newly symlinked dir.
 
+You will also need to copy `providers.example.json` to provider.json and configure appropriately.
+
 TODO
 ----
 
