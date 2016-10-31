@@ -10,14 +10,12 @@ module.exports = function (Order) {
    * @param req
    * @returns {Promise}
    */
-  Order.makeOrder = (body, req) => {
+  Order.makeOrder = (order, req) => {
     // TODO: check billing such as stripe
     // TODO: set prices etc. on tickets as per the standard
     // TODO: totals + payment fees
     // TODO: add and validate order uuid to prevent duplicate orders
     // TODO: validate userId is from the requesting user
-
-    const order = body.order;
 
     console.log(req.accessToken);
     order.userId = req.accessToken.userId;
@@ -27,7 +25,7 @@ module.exports = function (Order) {
       throw new Error('No tickets are in the order object?');
     }
 
-    if (tickets.length > 5) { // TODO: centralise max tickets purchasing + check already bought tickets
+    if (tickets.length > 20) { // TODO: centralise max tickets purchasing + check already bought tickets
       throw new Error('Attempting to purchase too many tickets');
     }
 
@@ -59,7 +57,7 @@ module.exports = function (Order) {
         order.total = total + fees;
 
         // TODO: check that tickets of this type are available
-        // TODO: check user hasn't bought more than x tickets already
+        // TODO: check user hasn't bought more than x tickets already?
 
         if (order.paymentMethod === 'stripe') {
           return stripe.charges.create({
