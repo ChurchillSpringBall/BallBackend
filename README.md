@@ -19,9 +19,15 @@ parent-dir/
     server/
 ```
 
-You can also symlink the `frontend/dist` folder to `client-symlink` in this project and then configure your `server/config.development.json` to set the `client/` directory to your newly symlinked dir.
+You can also symlink the `frontend/dist` folder to `client-symlink` in this project and then configure your `server/config.development.json` to set the `client/` directory to your newly symlinked dir. Then run the frontend using `npm run watch:prod` to build the frontend `dist/` folder.
 
-You will also need to copy `providers.example.json` to provider.json and configure appropriately.
+You will also need to copy set up your config files in the `server/` folder:
+
+```
+cp config.example.json config.json
+cp datasources.example.json datasources.json
+cp providers.example.json providers.json
+```
 
 TODO
 ----
