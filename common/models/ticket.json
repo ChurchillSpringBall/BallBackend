@@ -31,6 +31,11 @@
       "type": "date",
       "required": false,
       "default": null
+    },
+    "collectedAt": {
+      "type": "date",
+      "required": false,
+      "default": null
     }
   },
   "validations": [],
@@ -55,6 +60,12 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "count"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "nameChange"
     }
   ],
   "methods": {}

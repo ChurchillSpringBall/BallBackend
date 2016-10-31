@@ -55,6 +55,8 @@ module.exports = function (Profile) {
       scope: 'sub'
     };
 
+    console.log(search);
+
     return new Promise((resolve, reject) => {
       ldapClient.search('ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk', search, (err, ldapRes) => {
         if (err) throw err;
@@ -81,7 +83,11 @@ module.exports = function (Profile) {
           return resolve(results);
         });
       });
-    });
+    })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
   };
 
   Profile.remoteMethod('loadProfile', {

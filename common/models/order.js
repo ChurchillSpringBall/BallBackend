@@ -16,8 +16,10 @@ module.exports = function (Order) {
     // TODO: check user hasn't already got more than 20 tickets
     // TODO:
 
-    console.log(req.accessToken);
     order.userId = req.accessToken.userId;
+    if (!order.userId && order.userId !== 0) {
+      throw new Error('Authentication failed.');
+    }
 
     const tickets = order.tickets;
     if (!tickets || !tickets.length) {
