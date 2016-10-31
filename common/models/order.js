@@ -19,6 +19,7 @@ module.exports = function (Order) {
 
     console.log(req.accessToken);
     order.userId = req.accessToken.userId;
+    order.paymentToken = order.paymentToken.id;
 
     const tickets = order.tickets;
     if (!tickets || !tickets.length) {
@@ -72,11 +73,11 @@ module.exports = function (Order) {
       .then(() => Order.create(order))
       .then(order => {
         tickets.forEach(ticket => ticket.orderId = order.id);
-        // for some reason Ticket.create doesn't return anything...
+        // for some reason Ticket.create doesn't return a Promise...
         return new Promise((resolve, reject) => {
           Order.app.models.Ticket.create(tickets, (error, tickets) => {
             if (error) {
-              throw error;
+              return reject(error);
             }
 
             // avoid getter/property permissions issues by cloning
