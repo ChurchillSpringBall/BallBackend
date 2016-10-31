@@ -14,6 +14,7 @@ module.exports = function (Profile) {
    * @returns {Promise.<boolean>}
    */
   Profile.loadProfile = (userId) => {
+    console.log(`Loading LDAP profile for user ${userId}`);
     return Profile.findOne({where: {userId: userId}})
       .then(profile => {
         if (profile) {
@@ -52,35 +53,41 @@ module.exports = function (Profile) {
   Profile.ldapLookup = (crsid) => {
     const search = {
       filter: `(uid=${crsid})`,
-      scope: 'sub'
+      scope: 'sub',
+      // sizeLimit: 10
     };
 
     console.log(search);
 
     return new Promise((resolve, reject) => {
-      ldapClient.search('ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk', search, (err, ldapRes) => {
+      ldapClient.bind('ou=people', '', (err, result) => {
         if (err) throw err;
+        console.log(result);
 
-        const results = [];
+        ldapClient.search('ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk', search, (err, ldapRes) => {
+          if (err) throw err;
 
-        ldapRes.on('searchEntry', (entry) => {
-          console.log('entry: ' + JSON.stringify(entry.object));
-          results.push(entry.object);
-        });
+          const results = [];
 
-        // NOTE: not entirely sure what this is
-        ldapRes.on('searchReference', (referral) => {
-          console.log('referral: ' + referral.uris.join());
-        });
+          ldapRes.on('searchEntry', (entry) => {
+            console.log('entry: ' + JSON.stringify(entry.object));
+            results.push(entry.object);
+          });
 
-        ldapRes.on('error', (err) => {
-          console.error('error: ' + err.message);
-          return reject(err);
-        });
+          // NOTE: not entirely sure what this is
+          ldapRes.on('searchReference', (referral) => {
+            console.log('referral: ' + referral.uris.join());
+          });
 
-        ldapRes.on('end', (result) => {
-          console.log('status: ' + result.status);
-          return resolve(results);
+          ldapRes.on('error', (err) => {
+            console.error('error: ' + err.message);
+            return reject(err);
+          });
+
+          ldapRes.on('end', (result) => {
+            console.log('status: ' + result.status);
+            return resolve(results);
+          });
         });
       });
     })
