@@ -6,6 +6,7 @@
     "build:sdk": "./node_modules/.bin/lb-sdk server/server.js ../frontend/src/app/shared/sdk -d ng4web -i disabled",
     "lint": "eslint .",
     "start": "node .",
+    "prod": "NODE_ENV=production node .",
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "loopback-component-passport": "^2.3.0",
     "loopback-connector-postgresql": "^2.7.0",
     "passport-raven": "github:churchillspringball/passport-raven#2.0.0",
+    "request-promise-native": "^1.0.3",
     "serve-favicon": "^2.0.1",
     "stripe": "^4.12.0",
     "strong-error-handler": "^1.0.1"

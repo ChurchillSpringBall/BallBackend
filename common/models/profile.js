@@ -1,10 +1,7 @@
 'use strict';
 
 const loopback = require('loopback');
-const ldap = require('ldapjs');
-const ldapClient = ldap.createClient({
-  url: 'ldap://ldap.lookup.cam.ac.uk'
-});
+const request = require('request-promise-native');
 
 module.exports = function (Profile) {
   /**
@@ -24,21 +21,10 @@ module.exports = function (Profile) {
         } else {
           return Profile.app.models.UserIdentity.findOne({where: {userId: userId}})
             .then(identity => Profile.ldapLookup(identity.externalId))
-            .then(ldap => {
-              if (!(ldap && ldap.length === 1)) {
-                throw new Error('Could not fetch user Raven profile via LDAP');
-              }
+            .then(profile => {
+              profile.userId = userId;
 
-              const user = ldap[0];
-
-              return Profile.upsertWithWhere({userId: userId}, {
-                name: user.displayName,
-                crsid: user.uid,
-                institution: user.ou,
-                email: user.mail,
-                isChurchill: user.ou.startsWith('Churchill College'),
-                userId: userId
-              });
+              return Profile.upsertWithWhere({userId: userId}, profile);
             });
         }
       })
@@ -46,7 +32,7 @@ module.exports = function (Profile) {
   };
 
   /**
-   * Perform an LDAP lookup on a user's crsid
+   * Perform an LDAP lookup on a user's crsid via the Churchill JCR site to proxy into the CUDN for LDAP
    * @param crsid
    * @returns {Promise}
    */
@@ -59,38 +45,27 @@ module.exports = function (Profile) {
 
     console.log(search);
 
-    return new Promise((resolve, reject) => {
-      ldapClient.bind('ou=people', '', (err, result) => {
-        if (err) throw err;
-        console.log(result);
-
-        ldapClient.search('ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk', search, (err, ldapRes) => {
-          if (err) throw err;
-
-          const results = [];
-
-          ldapRes.on('searchEntry', (entry) => {
-            console.log('entry: ' + JSON.stringify(entry.object));
-            results.push(entry.object);
-          });
-
-          // NOTE: not entirely sure what this is
-          ldapRes.on('searchReference', (referral) => {
-            console.log('referral: ' + referral.uris.join());
-          });
-
-          ldapRes.on('error', (err) => {
-            console.error('error: ' + err.message);
-            return reject(err);
-          });
-
-          ldapRes.on('end', (result) => {
-            console.log('status: ' + result.status);
-            return resolve(results);
-          });
-        });
-      });
+    request.get({
+      uri: `http://jcr.chu.cam.ac.uk/ldap/${crsid}`,
+      json: true
     })
+      .then(response => {
+        if (!response.count) throw new Error(`No results for ${crsid}`);
+
+        const profile = {
+          name: response[0].displayname[0],
+          email: response[0].mail[0],
+          institution: response[0].ou[0],
+          crsid: response[0].uid[0],
+          isChurchill: response[0].ou[0].startsWith('Churchill College')
+        };
+
+        if (!profile.name || !profile.email || !profile.institution || !profile.crsid) {
+          throw new Error(`Invalid Raven response. Could not get user's name, email, or institution.`);
+        }
+
+        return profile;
+      })
       .catch(error => {
         console.error(error);
         throw error;
