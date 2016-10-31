@@ -11,15 +11,13 @@ module.exports = function (Order) {
    * @returns {Promise}
    */
   Order.makeOrder = (order, req) => {
-    // TODO: check billing such as stripe
-    // TODO: set prices etc. on tickets as per the standard
-    // TODO: totals + payment fees
-    // TODO: add and validate order uuid to prevent duplicate orders
-    // TODO: validate userId is from the requesting user
+    // TODO: add and validate order uuid to prevent duplicate orders?
+    // TODO: validate that tickets are available of that type
+    // TODO: check user hasn't already got more than 20 tickets
+    // TODO:
 
     console.log(req.accessToken);
     order.userId = req.accessToken.userId;
-    order.paymentToken = order.paymentToken.id;
 
     const tickets = order.tickets;
     if (!tickets || !tickets.length) {

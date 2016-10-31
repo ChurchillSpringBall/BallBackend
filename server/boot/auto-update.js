@@ -9,6 +9,7 @@ module.exports = function AutoUpdate(server) {
     .then(() => {
       return server.models.TicketType.upsertWithWhere({name: 'Standard'}, {
         name: 'Standard',
+        description: 'Very short sentence about what the standard ticket offers.',
         price: 85,
         quantity: 750,
       })
@@ -16,6 +17,7 @@ module.exports = function AutoUpdate(server) {
     .then(() => {
       return server.models.TicketType.upsertWithWhere({name: 'Queue Jump'}, {
         name: 'Queue Jump',
+        description: 'Very short sentence about what the queue jump ticket offers.',
         price: 95,
         quantity: 150
       });
