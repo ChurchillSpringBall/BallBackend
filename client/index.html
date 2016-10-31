@@ -1,10 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
 <head>
-    <meta charset="UTF-8">
-    <title>Loopback Client Page</title>
-</head>
-<body>
-<h1>Client files go here</h1>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Churchill Spring Ball</title>
+  <meta name="description" content="Churchill Spring Ball">
+  <link rel="icon" type="image/png" href="/assets/icon/favicon.png">
+
+  <script src="https://checkout.stripe.com/checkout.js" type="text/javascript" defer></script>
+
+  
+  <!-- Configured Head Tags  -->
+  <link rel="manifest" href="/assets/manifest.json">
+	<meta name="msapplication-TileColor" content="#00bcd4">
+	<meta name="theme-color" content="#00bcd4">
+  
+
+  <!-- base url -->
+  <base href="/">
+
+  <style>
+    body {
+      background-color: #eef2f4;
+    }
+
+    .showbox {
+      display: table;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .showbox .table-cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .showbox .loader {
+      position: relative;
+      margin: 0 auto;
+      width: 80px;
+    }
+
+    .showbox .loader:before {
+      content: '';
+      display: block;
+      padding-top: 100%;
+    }
+
+    .showbox .circular {
+      -webkit-animation: rotate 2s linear infinite;
+      animation: rotate 2s linear infinite;
+      height: 100%;
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .showbox .path {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+      -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+      animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+      stroke-linecap: round;
+    }
+
+    @-webkit-keyframes rotate {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotate {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @-webkit-keyframes dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+      }
+      100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+      }
+    }
+
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+      }
+      100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+      }
+    }
+
+    @-webkit-keyframes color {
+      100%,
+      0% {
+        stroke: #d62d20;
+      }
+      40% {
+        stroke: #0057e7;
+      }
+      66% {
+        stroke: #008744;
+      }
+      80%,
+      90% {
+        stroke: #ffa700;
+      }
+    }
+
+    @keyframes color {
+      100%,
+      0% {
+        stroke: #d62d20;
+      }
+      40% {
+        stroke: #0057e7;
+      }
+      66% {
+        stroke: #008744;
+      }
+      80%,
+      90% {
+        stroke: #ffa700;
+      }
+    }
+  </style>
+<script src="polyfills.a8b6c6d6f960bbaa8775.bundle.js" type="text/javascript" defer></script><script src="vendor.7830dff9c08dba4fe87f.bundle.js" type="text/javascript" defer></script><script src="main.6e895722604cc50f3eab.bundle.js" type="text/javascript" defer></script></head>
+
+<body class="ball website">
+
+<app>
+  <!-- TODO: remove loader if this looks crap? -->
+  <div class="showbox">
+    <div class="table-cell">
+      <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</app>
+
+<!-- Google Analytics: change UA-71073175-1 to be your site's ID -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+  //    ga('create', 'UA-71073175-1', 'auto');
+  //    ga('send', 'pageview');
+</script>
+
+
+
 </body>
 </html>
