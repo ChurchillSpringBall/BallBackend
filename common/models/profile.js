@@ -37,15 +37,9 @@ module.exports = function (Profile) {
    * @returns {Promise}
    */
   Profile.ldapLookup = (crsid) => {
-    const search = {
-      filter: `(uid=${crsid})`,
-      scope: 'sub',
-      // sizeLimit: 10
-    };
+    console.log(`Searching LDAP for ${crsid}`);
 
-    console.log(search);
-
-    request.get({
+    return request.get({
       uri: `http://jcr.chu.cam.ac.uk/ldap/${crsid}`,
       json: true
     })

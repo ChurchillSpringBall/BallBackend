@@ -22,6 +22,11 @@ module.exports = function AutoUpdate(server) {
         quantity: 150
       });
     })
+    // testing LDAP
+    // .then(() => server.models.Profile.ldapLookup('lng25'))
+    // .then(profile => console.log(profile))
+    // .then(() => server.models.Profile.ldapLookup('sg768'))
+    // .then(profile => console.log(profile))
     .catch(error => {
       console.error(error);
       process.exit(1);

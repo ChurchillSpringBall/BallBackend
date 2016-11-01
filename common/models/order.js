@@ -1,12 +1,12 @@
 'use strict';
 
-// TODO: centralise the keys
-const stripe = require('stripe')('sk_test_kSs5RGJjZRksLYpaf6rwhywQ');
+const config = require('../../server/config');
+const stripe = require('stripe')(config.stripeSecretKey); // sk_test_fFI4o0KKofo4dEgf7ZO0X6XE
 
 module.exports = function (Order) {
   /**
    * Validate the totals and payments
-   * @param body
+   * @param order
    * @param req
    * @returns {Promise}
    */
@@ -14,7 +14,6 @@ module.exports = function (Order) {
     // TODO: add and validate order uuid to prevent duplicate orders?
     // TODO: validate that tickets are available of that type
     // TODO: check user hasn't already got more than 20 tickets
-    // TODO:
 
     order.userId = req.accessToken.userId;
     if (!order.userId && order.userId !== 0) {
