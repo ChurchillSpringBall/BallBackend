@@ -12,7 +12,7 @@ module.exports = function (Order) {
    */
   Order.makeOrder = (order, req) => {
     // TODO: add and validate order uuid to prevent duplicate orders?
-    // TODO: validate that tickets are available of that type
+    // TODO: validate that the correct number of queue jump and standard tickets are available for this order (ignore race condition)
     // TODO: check user hasn't already got more than 20 tickets
 
     order.userId = req.accessToken.userId;
