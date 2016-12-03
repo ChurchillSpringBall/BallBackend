@@ -15,6 +15,11 @@ module.exports = function (Order) {
     // TODO: validate that the correct number of queue jump and standard tickets are available for this order (ignore race condition)
     // TODO: check user hasn't already got more than 20 tickets
 
+    // when purchasing via college account is enabled: && order.paymentMethod !== 'college-account'
+    if (order.paymentMethod !== 'stripe') {
+      throw new Error('Invalid payment method.')
+    }
+
     order.userId = req.accessToken.userId;
     if (!order.userId && order.userId !== 0) {
       throw new Error('Authentication failed.');

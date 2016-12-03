@@ -7,7 +7,7 @@
     "debug": false,
     "passReqToCallback": true,
 
-    "audience": "http://localhost:3001",
+    "audience": "http://localhost:3001 || http://131.111.202.70:8000",
 
     "authScheme": "openid",
     "authPath": "/auth/raven",
