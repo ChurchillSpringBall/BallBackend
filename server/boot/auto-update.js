@@ -10,7 +10,7 @@ module.exports = function AutoUpdate(server) {
       return server.models.TicketType.upsertWithWhere({name: 'Standard'}, {
         name: 'Standard',
         description: 'Unlimited food and drink with all entertainment and acts included.',
-        price: 85,
+        price: 95,
         quantity: 750,
       })
     })
@@ -18,7 +18,7 @@ module.exports = function AutoUpdate(server) {
       return server.models.TicketType.upsertWithWhere({name: 'Queue Jump'}, {
         name: 'Queue Jump',
         description: 'All the Standard perks with priority entry into the ball.',
-        price: 95,
+        price: 105,
         quantity: 150
       });
     })
