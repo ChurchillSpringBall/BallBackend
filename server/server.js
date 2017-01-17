@@ -16,9 +16,24 @@ const PassportConfigurator = require('loopback-component-passport').PassportConf
 const passportConfigurator = new PassportConfigurator(app);
 const providers = require('./providers.json');
 
+// null properties break swagger so we delete them to view the api
+app.get('/explorer/swagger.json', (req, res, next) => {
+  const _send = res.send;
+  res.send = (data) => {
+    if (data && data.definitions) {
+      //A proper function could be written for this but its a fairly small model
+      delete data.definitions.Ticket.properties.admittedAt.default;
+      delete data.definitions.Ticket.properties.collectedAt.default;
+    }
+    _send.apply(res, [data]);
+  };
+  next();
+});
+
 app.start = () => {
   // start the web server
   return app.listen(() => {
+
     app.emit('started');
     const baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
@@ -28,6 +43,7 @@ app.start = () => {
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });
+
 };
 
 // Bootstrap the application, configure models, datasources and middleware.
@@ -35,7 +51,7 @@ app.start = () => {
 boot(app, __dirname, (error) => {
   if (error) throw error;
 
-  app.middleware('auth', loopback.token({model: app.models.accessToken}));  // TODO: check if token + session should be used?]
+  app.middleware('auth', loopback.token({ model: app.models.accessToken }));  // TODO: check if token + session should be used?]
   // app.middleware('session:before', cookieParser(app.get('cookieSecret')));
   app.middleware('session', session({
     secret: '9g2b4fchiuhfn2eocfin2ea2fv3wrgv350jino45gn',
@@ -71,4 +87,7 @@ boot(app, __dirname, (error) => {
   // start the server if `$ node server.js`
   if (require.main === module)
     app.start();
+
+
 });
+
