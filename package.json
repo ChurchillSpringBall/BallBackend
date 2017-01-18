@@ -30,7 +30,7 @@
     "strong-error-handler": "^1.0.1"
   },
   "devDependencies": {
-    "@mean-expert/loopback-sdk-builder": "2.0.10",
+    "@mean-expert/loopback-sdk-builder": "2.1.0-beta.13",
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
     "nsp": "^2.1.0"

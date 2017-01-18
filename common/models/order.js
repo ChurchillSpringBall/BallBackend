@@ -103,34 +103,40 @@ module.exports = function (Order) {
     http: {path: '/make', verb: 'post'}
   })
 
-    /**
-     * Process a name change charge
-     * @param nameChange
-     * @param req
-     * @returns {Promise}
-     */
-    Order.processNameChangeFee = (nameChange, req) => {
-      if (!req.accessToken.userId && req.accessToken.userId !== 0) {
-        throw new Error('Authentication failed.');
-      }
+  /**
+   * Process a name change charge
+   * @param order
+   * @param req
+   * @returns {Promise}
+   */
+  Order.processNameChangeFee = (order, req) => {
 
-      return stripe.charges.create({
-        amount: Math.round(order.total * 100),
-        currency: 'GBP',
-        source: order.paymentToken,
-        description: 'Churchill Spring Ball Tickets',
-        statement_descriptor: 'Chu Ball Tickets'
-      }).then(() => Order.create(order));
-    };
+    if (!req.accessToken.userId && req.accessToken.userId !== 0) {
+      throw new Error('Authentication failed.');
+    }
+    order.userId = req.accessToken.userId;
 
-    Order.remoteMethod('processNameChangeFee', {
-      accepts: [
-        {arg: 'order', type: 'object', http: {source: 'body'}, required: true},
-        {arg: 'req', type: 'object', http: {source: 'req'}},
-      ],
-      returns: {arg: 'order', type: 'object'},
-      http: {path: '/namechangefee', verb: 'post'}
-    })
+    if (order.paymentMethod !== 'stripe') {
+      throw new Error('Invalid payment method.')
+    }
+
+    return stripe.charges.create({
+      amount: Math.round(order.total * 100),
+      currency: 'GBP',
+      source: order.paymentToken,
+      description: 'Churchill Spring Ball Tickets',
+      statement_descriptor: 'Chu Ball Tickets'
+    }).then(() => Order.create(order));
+  };
+
+  Order.remoteMethod('processNameChangeFee', {
+    accepts: [
+      {arg: 'order', type: 'object', http: {source: 'body'}, required: true},
+      {arg: 'req', type: 'object', http: {source: 'req'}},
+    ],
+    returns: {arg: 'order', type: 'object'},
+    http: {path: '/namechangefee', verb: 'post'}
+  })
 };
 
 /**

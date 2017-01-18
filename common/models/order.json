@@ -73,6 +73,12 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": "__get__tickets"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "processNameChangeFee"
     }
   ],
   "methods": {}
