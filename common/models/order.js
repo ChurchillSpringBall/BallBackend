@@ -59,7 +59,7 @@ module.exports = function (Order) {
           fees = calculateStripeFees(total);
         }
 
-        order.total = total + fees;
+        order.total = total + fees + order.charitableDonation;
 
         // TODO: check that tickets of this type are available
         // TODO: check user hasn't bought more than x tickets already?

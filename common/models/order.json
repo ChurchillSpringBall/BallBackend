@@ -36,6 +36,10 @@
         "columnName": "total",
         "dataType": "real"
       }
+    },
+    "charitableDonation": {
+      "type": "number",
+      "required": false
     }
   },
   "validations": [],
