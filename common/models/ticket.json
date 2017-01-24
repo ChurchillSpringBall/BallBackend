@@ -66,6 +66,12 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "nameChange"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "checkTicket"
     }
   ],
   "methods": {}

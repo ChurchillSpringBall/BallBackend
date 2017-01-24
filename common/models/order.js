@@ -34,6 +34,10 @@ module.exports = function (Order) {
       throw new Error('Attempting to purchase too many tickets');
     }
 
+    if (order.charitableDonation && order.charitableDonation < 0) {
+      throw new Error('Charitable Donation must be greater than £0');
+    }
+
     return Order.app.models.TicketType.find()
       .then(ticketTypes => {
         const types = {};
@@ -114,6 +118,8 @@ module.exports = function (Order) {
     if (!req.accessToken.userId && req.accessToken.userId !== 0) {
       throw new Error('Authentication failed.');
     }
+
+
     order.userId = req.accessToken.userId;
 
     if (order.paymentMethod !== 'stripe') {
@@ -124,7 +130,7 @@ module.exports = function (Order) {
       amount: Math.round(order.total * 100),
       currency: 'GBP',
       source: order.paymentToken,
-      description: 'Churchill Spring Ball Tickets',
+      description: 'Churchill Spring Ball Ticket Name Change',
       statement_descriptor: 'Chu Ball Tickets'
     }).then(() => Order.create(order));
   };

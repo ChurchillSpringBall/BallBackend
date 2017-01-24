@@ -39,7 +39,11 @@
     },
     "charitableDonation": {
       "type": "number",
-      "required": false
+      "required": false,
+      "postgresql": {
+        "columnName": "charitableDonation",
+        "dataType": "real"
+      }
     }
   },
   "validations": [],
@@ -80,7 +84,7 @@
     },
     {
       "principalType": "ROLE",
-      "principalId": "$everyone",
+      "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "processNameChangeFee"
     }
