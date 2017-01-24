@@ -36,6 +36,14 @@
         "columnName": "total",
         "dataType": "real"
       }
+    },
+    "charitableDonation": {
+      "type": "number",
+      "required": false,
+      "postgresql": {
+        "columnName": "charitableDonation",
+        "dataType": "real"
+      }
     }
   },
   "validations": [],
@@ -73,6 +81,12 @@
       "principalId": "$owner",
       "permission": "ALLOW",
       "property": "__get__tickets"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "processNameChangeFee"
     }
   ],
   "methods": {}
