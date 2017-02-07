@@ -8,6 +8,8 @@ module.exports = function(Ticket) {
    * @param req
    */
   Ticket.nameChange = (ticket, req) => {
+    throw new Error('Name change is closed');
+
     const userId = req.accessToken.userId;
     if (!userId && userId !== 0) {
       throw new Error('Authentication failed.');

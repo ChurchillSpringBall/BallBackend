@@ -11,6 +11,8 @@ module.exports = function (Order) {
    * @returns {Promise}
    */
   Order.makeOrder = (order, req) => {
+    throw new Error('Ticket sales have closed');
+
     // TODO: add and validate order uuid to prevent duplicate orders?
     // TODO: validate that the correct number of queue jump and standard tickets are available for this order (ignore race condition)
     // TODO: check user hasn't already got more than 20 tickets
@@ -101,36 +103,7 @@ module.exports = function (Order) {
     ],
     returns: {arg: 'order', type: 'object'},
     http: {path: '/make', verb: 'post'}
-  })
-
-    /**
-     * Process a name change charge
-     * @param nameChange
-     * @param req
-     * @returns {Promise}
-     */
-    Order.processNameChangeFee = (nameChange, req) => {
-      if (!req.accessToken.userId && req.accessToken.userId !== 0) {
-        throw new Error('Authentication failed.');
-      }
-
-      return stripe.charges.create({
-        amount: Math.round(order.total * 100),
-        currency: 'GBP',
-        source: order.paymentToken,
-        description: 'Churchill Spring Ball Tickets',
-        statement_descriptor: 'Chu Ball Tickets'
-      }).then(() => Order.create(order));
-    };
-
-    Order.remoteMethod('processNameChangeFee', {
-      accepts: [
-        {arg: 'order', type: 'object', http: {source: 'body'}, required: true},
-        {arg: 'req', type: 'object', http: {source: 'req'}},
-      ],
-      returns: {arg: 'order', type: 'object'},
-      http: {path: '/namechangefee', verb: 'post'}
-    })
+  });
 };
 
 /**
